@@ -17,7 +17,7 @@ int main(int argc, const char * argv[])
     //  instantiate our filter
     //  this filter holds strings
     BloomFilter<string> bf(100, 30);
-    cout << bf.calculateFalsePositive() << endl;
+    cout << "False positive: " << bf.calculateFalsePositive() << endl;
     
     //  add some items to the filter
     string input[10];
@@ -44,43 +44,37 @@ int main(int argc, const char * argv[])
             cout << "Yes!" << endl;
         }
         else {
-            cout << "Wasn't there!" << endl;
+            cout << "Isn't there!" << endl;
         }
     }
     
-    cout << "Creating a Bloom Filter for ints" << endl;
-    //  instantiate a filter that holds ints
-    BloomFilter<int> bf2(30, 10);
+    //  toString function
+    cout << bf.toString() << endl;
     
-    //  add some ints to the filter
-    count = -1;
-    int input2[10];
+    //  allow user to enter words to be checked against the first bloom filter
+    string inp;
     do {
-        count++;
-        cout << "What do you want to add? ";
-        cin >> input2[count];
-        cout << input2[count];
+        cout << "What string do you want to check? ";
+        getline(cin, inp);
         if (cin.fail()) {
             cin.clear(100);
             cout << "Invalid!" << endl;
         }
-        else {
-            bf2.add(input2[count]);
-            cout << "Added \"" << input2[count] << "\"" << endl;
+        else if (inp != "n" && inp != "N") {
+            if (bf.check(inp)) {
+                cout << "Yes!" << endl;
+            }
+            else {
+                cout << "Isn't there!" << endl;
+            }
         }
-    } while (count < 10);
+    } while (inp != "n" && inp != "N");
+
+    //  use the other constructor
+    BloomFilter<int> otherFilter(20, 0.15);
     
-    //  these should all be Yes
-    //  bloom filters do not give false negatives
-    for (int i = 0; i < count; i++) {
-        cout << "Checking if \"" << input2[i] << "\" is in the Bloom Filter!" << endl;
-        if (bf2.check(input2[i])) {
-            cout << "Yes!" << endl;
-        }
-        else {
-            cout << "Wasn't there!" << endl;
-        }
-    }
+    //  toString, once again
+    cout << otherFilter.toString() << endl;
     
     return 0;
 }
